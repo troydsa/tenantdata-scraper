@@ -12,17 +12,10 @@ url_without_params = 'https://rensselaercounty.prosgar.com/PROSSearch/SearchInde
 def filter_out_keys_with_none_values(params: dict[str, Any]) -> dict[str, Any]:
     return {k: v for k, v in params.items() if v is not None}
 
-def add_leading_zeroes(params: dict[str, Any]) -> dict[str, Any]:
-    to_return = params.copy()
-    for key, value in to_return.items():
-        if isinstance(value, int) and value < 10:
-            to_return[key] = '{:02}'.format(value)
-    return to_return
     
 def make_url(params: dict[str, Any]) -> str:
     # This is so that later we can just set the values to None if we don't want that param to be considered, rather than having to remove it from the dict
     params = filter_out_keys_with_none_values(params)
-    params = add_leading_zeroes(params)
     params_string = urllib.parse.urlencode(params)
     
     return url_without_params + '?' + params_string
