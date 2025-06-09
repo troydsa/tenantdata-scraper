@@ -1,5 +1,5 @@
 # tenantdata-scraper
-A tool for collecting public eviction court data for use by tenant advocates
+A tool for collecting data on landlord-owned properties in Rensselaer Country
 
 ## important links
 - [New York State court system search tool](https://iapps.courts.state.ny.us/webcivilLocal/LCCalendarSearch)
