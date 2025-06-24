@@ -13,7 +13,7 @@ def filter_out_keys_with_none_values(params: dict[str, Any]) -> dict[str, Any]:
     return {k: v for k, v in params.items() if v is not None}
 
     
-def make_url(params: dict[str, Any]) -> str:
+def url_from_params(params: dict[str, Any]) -> str:
     # This is so that later we can just set the values to None if we don't want that param to be considered, rather than having to remove it from the dict
     params = filter_out_keys_with_none_values(params)
     params_string = urllib.parse.urlencode(params)
@@ -87,4 +87,4 @@ if __name__ == '__main__':
         'Waterfront': 5
     }
     
-    print(make_url(params2))
+    print(url_from_params(params2))
