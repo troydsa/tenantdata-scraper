@@ -23,6 +23,7 @@ def raw_html_from_url(url: str) -> str:
 def html_from_url(url: str) -> StringIO:
     return StringIO(raw_html_from_url(url))
 
+"""Works so long as table is <50 elements"""
 def table_from_url(url: str) -> pd.DataFrame:
     return pd.read_html(html_from_url(url))[0]
 
@@ -81,7 +82,5 @@ if __name__ == '__main__':
     
     
     driver.quit()
-    
-    
     
     
