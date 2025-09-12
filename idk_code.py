@@ -51,6 +51,14 @@ FIREPLACES_MIN = ""
 FIREPLACES_MAX = ""
 FILTER_WATERFRONTS_AJAX = "False"
 
+def get_api_token(html: str) -> str:
+    # Parse anti-forgery token from HTML
+    soup = BeautifulSoup(html, "html.parser")
+    token_input = soup.find("input", {"name": "__RequestVerificationToken"})
+    if not token_input:
+        raise RuntimeError("Anti-forgery token not found on advanced-search page")
+    return token_input.get("value")
+
 def search() -> list[dict]:
     session = requests.Session()
     session.headers.update({
@@ -59,15 +67,10 @@ def search() -> list[dict]:
     })
 
     # GET the advanced search page to obtain cookies + __RequestVerificationToken
-    get_res = session.get(SEARCH_URL, timeout=30)
-    get_res.raise_for_status()
+    initial_request = session.get(SEARCH_URL, timeout=30)
+    initial_request.raise_for_status()
 
-    # Parse anti-forgery token from HTML
-    soup = BeautifulSoup(get_res.text, "html.parser")
-    token_input = soup.find("input", {"name": "__RequestVerificationToken"})
-    if not token_input:
-        raise RuntimeError("Anti-forgery token not found on advanced-search page")
-    csrf_token = token_input.get("value")
+    csrf_token = get_api_token(initial_request.text)
 
     # POST the advanced-search form
     adv_form = {
